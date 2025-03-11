@@ -163,17 +163,18 @@ function saveData() {
         "businessName", "yearsBusiness", "businessAddress", "income"
     ];
 
-    let formData = {};
+    // Get existing data (if any) to prevent overwriting images
+    let existingData = JSON.parse(localStorage.getItem("formData")) || {};
 
     fields.forEach(field => {
         let inputElement = document.getElementById(field);
         if (inputElement) {
-            formData[field] = inputElement.value;
+            existingData[field] = inputElement.value; // Merge new data
         }
     });
 
-    // Store the data in localStorage
-    localStorage.setItem("formData", JSON.stringify(formData));
+    // Save updated data back to localStorage
+    localStorage.setItem("formData", JSON.stringify(existingData));
     alert("Data saved successfully!");
 }
 
