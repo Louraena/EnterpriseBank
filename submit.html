@@ -133,9 +133,13 @@
 
     
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-   <script>
-    document.addEventListener("DOMContentLoaded", function () {
+   
+    
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
     loadSavedData(); // Load saved text fields
+    displayImages(); // Load saved images
     document.getElementById("sendEmailButton").addEventListener("click", sendEmail);
 });
 
@@ -153,6 +157,26 @@ function loadSavedData() {
             }
         });
     }
+}
+
+// Function to load and display stored images
+function displayImages() {
+    const images = [
+        { storageKey: "idPicture", imgElementId: "idPicture" },
+        { storageKey: "validID1", imgElementId: "validID1" },
+        { storageKey: "validID2", imgElementId: "validID2" },
+        { storageKey: "businessPermit", imgElementId: "businessPermit" },
+        { storageKey: "bti", imgElementId: "bti" }
+    ];
+
+    images.forEach(image => {
+        let storedImage = localStorage.getItem(image.storageKey);
+        if (storedImage) {
+            document.getElementById(image.imgElementId).src = storedImage;
+        } else {
+            document.getElementById(image.imgElementId).style.display = "none"; // Hide if no image is available
+        }
+    });
 }
 
 // Function to send an email using EmailJS
@@ -190,57 +214,7 @@ function sendEmail() {
         });
 }
 
-
-
-     // Function to save the uploaded file as Base64 in localStorage
-     function saveImage(inputId, storageKey) {
-        let fileInput = document.getElementById(inputId);
-        let file = fileInput.files[0];
-    
-        if (file) {
-            let reader = new FileReader();
-            reader.onload = function (e) {
-                localStorage.setItem(storageKey, e.target.result);
-                alert("Image saved successfully!");
-                displayImages(); // Call the display function to show the images immediately after saving
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-    
-    // Function to load and display stored images when the page loads
-    function displayImages() {
-        const images = [
-            { storageKey: "idPicture", imgElementId: "idPicture" },
-            { storageKey: "validID1", imgElementId: "validID1" },
-            { storageKey: "validID2", imgElementId: "validID2" },
-            { storageKey: "businessPermit", imgElementId: "businessPermit" },
-            { storageKey: "bti", imgElementId: "bti" }
-        ];
-    
-        images.forEach(image => {
-            let storedImage = localStorage.getItem(image.storageKey);
-            if (storedImage) {
-                // Set the src of the corresponding img element to the stored image
-                document.getElementById(image.imgElementId).src = storedImage;
-            }
-        });
-    }
-    
-    // Function to handle navigation to the next page
-    function nextPage(event) {
-        event.preventDefault();
-        window.location.href = "submit.html";
-    }
-    
-    // Load and display saved images when the page loads
-    document.addEventListener("DOMContentLoaded", displayImages);
-
-
-   </script>
-    
-    
-    
+    </script>
         
 
 </body>
