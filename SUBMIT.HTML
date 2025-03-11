@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit & Send PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #0A0A66;
+        }
+        .info {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .info p {
+            background: #F7941D;
+            padding: 10px;
+            color: 1E40AF;
+            border-radius: 5px;
+        }
+        .info img {
+            width: 150px;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: block;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover{
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Before Clicking Submit, Verify all information in accurate responses are complete, and any required attachments are properly uploaded.</h2>
+
+        <h2>Personal Information</h2>
+        <div class="info">
+            <p><strong>Name:</strong> <span id="name"></span></p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Age:</strong> <span id="age"></span></p>
+            <p><strong>Address:</strong> <span id="address"></span></p>
+            <p><strong>Sex:</strong> <span id="sex"></span></p>
+            <p><strong>Birth Date:</strong> <span id="birthdate"></span></p>
+            <p><strong>Status:</strong> <span id="status"></span></p>
+            <p><strong>Phone #:</strong> <span id="phone"></span></p>
+            <p><strong>Religion:</strong> <span id="religion"></span></p>
+            <p><strong>Zip Code:</strong> <span id="zipcode"></span></p>
+            <p><strong>Married:</strong> <span id="married"></span></p>
+        </div>
+
+        <h2>Business Information</h2>
+        <div class="info">
+            <p><strong>Business Name:</strong> <span id="businessName"></span></p>
+            <p><strong>Years of Business Operates:</strong> <span id="yearsBusiness"></span></p>
+            <p><strong>Business Address:</strong> <span id="businessAddress"></span></p>
+            <p><strong>Income:</strong> <span id="income"></span></p>
+        </div>
+
+        <h2>Uploaded Documents</h2>
+        <div class="info">
+            <p><strong>2x2 ID Picture:</strong><br> <img id="idPicture" src=""><br> <span id="idPictureName"></span></p>
+            <p><strong>Valid ID 1:</strong><br> <img id="validID1" src=""><br> <span id="validID1Name"></span></p>
+            <p><strong>Valid ID 2:</strong><br> <img id="validID2" src=""><br> <span id="validID2Name"></span></p>
+            <p><strong>Business Permit:</strong><br> <img id="businessPermit" src=""><br> <span id="businessPermitName"></span></p>
+            <p><strong>BTI:</strong><br> <img id="bti" src=""><br> <span id="btiName"></span></p>
+        </div>
+
+        
+        
+        <div class="buttons">
+            <a href="doc.html"><button class="btn btn-back" >BACK</button></a>
+            <a  ><button class="btn btn-next" id="sendEmailButton">SUBMIT</button></a>
+            
+        </div>
+    </div>
+
+    
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script>
+        function loadSavedData() {
+            const textFields = [
+                "name", "email", "age", "address", "sex", "birthdate",
+                "status", "phone", "religion", "zipcode", "married",
+                "businessName", "yearsBusiness", "businessAddress", "income"
+            ];
+    
+            textFields.forEach(field => {
+                let value = localStorage.getItem(field) || "N/A"; 
+                document.getElementById(field).textContent = value;
+            });
+        }
+    
+        function sendEmail() {
+            emailjs.init("pAvbhxqt3I4JzjYmi"); // Replace with your actual EmailJS Public Key
+    
+            const formData = {
+                Name: document.getElementById("name").textContent,
+                Email: document.getElementById("email").textContent,
+                Age: document.getElementById("age").textContent,
+                Address: document.getElementById("address").textContent,
+                Sex: document.getElementById("sex").textContent,
+                Birthdate: document.getElementById("birthdate").textContent,
+                Status: document.getElementById("status").textContent,
+                Phone: document.getElementById("phone").textContent,
+                Religion: document.getElementById("religion").textContent,
+                Zipcode: document.getElementById("zipcode").textContent,
+                Married: document.getElementById("married").textContent,
+                "Business Name": document.getElementById("businessName").textContent,
+                "Years in Business": document.getElementById("yearsBusiness").textContent,
+                "Business Address": document.getElementById("businessAddress").textContent,
+                Income: document.getElementById("income").textContent
+            };
+    
+            // Format message as plain text
+            const messageContent = Object.entries(formData)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join("\n");
+    
+            const emailParams = {
+                from_name: formData.Name,
+                email: formData.Email,
+                to_email: "your-email@example.com", // Replace with recipient email
+                message: messageContent
+            };
+    
+            emailjs.send("service_ym5r47e", "template_3yxr2f9", emailParams)
+                .then(response => {
+                    console.log("Your application has been submitted!", response);
+                    alert("Your application has been submitted! Our team will review your application and contact you within the day. Thank you");
+                })
+                .catch(error => {
+                    console.error("Error sending email:", error);
+                    alert("Error sending email: " + JSON.stringify(error));
+                });
+        }
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            loadSavedData();
+            document.getElementById("sendEmailButton").addEventListener("click", sendEmail);
+        });
+
+
+    // Function to save the uploaded file as Base64 in localStorage
+    function saveImage(inputId, storageKey) {
+        let fileInput = document.getElementById(inputId);
+        let file = fileInput.files[0];
+    
+        if (file) {
+            let reader = new FileReader();
+            reader.onload = function (e) {
+                localStorage.setItem(storageKey, e.target.result);
+                alert("Image saved successfully!");
+                displayImages(); // Call the display function to show the images immediately after saving
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    // Function to load and display stored images when the page loads
+    function displayImages() {
+        const images = [
+            { storageKey: "idPicture", imgElementId: "idPicture" },
+            { storageKey: "validID1", imgElementId: "validID1" },
+            { storageKey: "validID2", imgElementId: "validID2" },
+            { storageKey: "businessPermit", imgElementId: "businessPermit" },
+            { storageKey: "bti", imgElementId: "bti" }
+        ];
+    
+        images.forEach(image => {
+            let storedImage = localStorage.getItem(image.storageKey);
+            if (storedImage) {
+                // Set the src of the corresponding img element to the stored image
+                document.getElementById(image.imgElementId).src = storedImage;
+            }
+        });
+    }
+    
+    // Function to handle navigation to the next page
+    function nextPage(event) {
+        event.preventDefault();
+        window.location.href = "submit.html";
+    }
+    
+    // Load and display saved images when the page loads
+    document.addEventListener("DOMContentLoaded", displayImages);
+
+
+    </script>
+    
+    
+    
+        
+
+</body>
+</html>

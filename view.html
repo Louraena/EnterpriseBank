@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Submitted Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #0A0A66;
+        }
+        p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .image-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #F7941D;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: #d67a14;
+        }
+    </style>
+</head>
+<body onload="loadData()">
+
+    <div class="container">
+        <h2>Submitted Information</h2>
+        <div id="output"></div>
+
+        <h2>Uploaded Documents</h2>
+        <div class="image-container">
+            <p><strong>2x2 ID Picture:</strong></p>
+            <img id="idPicture" src="" alt="2x2 ID Picture">
+            
+            <p><strong>Valid ID 1:</strong></p>
+            <img id="validID1" src="" alt="Valid ID 1">
+            
+            <p><strong>Valid ID 2:</strong></p>
+            <img id="validID2" src="" alt="Valid ID 2">
+            
+            <p><strong>Business Permit:</strong></p>
+            <img id="businessPermit" src="" alt="Business Permit">
+            
+            <p><strong>BTI:</strong></p>
+            <img id="bti" src="" alt="BTI">
+        </div>
+
+        <a href="fillup.html" class="btn">Go Back</a>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+    
+        // 🔹 Replace with your actual Firebase configuration
+        const firebaseConfig = {
+        apiKey: "AIzaSyDELZqW9eql19d1gQD02P3t2cp6ok41DsY",
+        authDomain: "enterprisebank-eff26.firebaseapp.com",
+        projectId: "enterprisebank-eff26",
+        storageBucket: "enterprisebank-eff26.firebasestorage.app",
+        messagingSenderId: "544217279237",
+        appId: "1:544217279237:web:70f86a2c6878cd6831a56c",
+        measurementId: "G-DDHPVRR30R"
+        };
+    
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+    
+        async function loadData() {
+            const userId = localStorage.getItem("yYgsmPdzh3eIW11eMI8TR3fOQUk1"); // Replace with actual user ID logic
+            if (!userId) {
+                document.getElementById("output").innerHTML = "<p style='color:red;'>No user data found!</p>";
+                return;
+            }
+    
+            try {
+                const docRef = doc(db, "users", userId);
+                const docSnap = await getDoc(docRef);
+    
+                if (docSnap.exists()) {
+                    let data = docSnap.data();
+                    document.getElementById("output").innerHTML = `
+                        <p><strong>Name:</strong> ${data.name}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                        <p><strong>Phone:</strong> ${data.phone}</p>
+                        <p><strong>Address:</strong> ${data.address}</p>
+                    `;
+    
+                    // 🔹 Load images from Firebase Storage
+                    const images = ["idPicture", "validID1", "validID2", "businessPermit", "bti"];
+                    for (let img of images) {
+                        const imgRef = ref(storage, `uploads/${userId}/${img}.jpg`);
+                        try {
+                            const url = await getDownloadURL(imgRef);
+                            document.getElementById(img).src = url;
+                        } catch (error) {
+                            console.warn(`❌ ${img} not found:`, error);
+                            document.getElementById(img).style.display = "none";
+                        }
+                    }
+                } else {
+                    document.getElementById("output").innerHTML = "<p style='color:red;'>No user data found in Firebase!</p>";
+                }
+            } catch (error) {
+                console.error("🔥 Firebase Error:", error);
+                document.getElementById("output").innerHTML = "<p style='color:red;'>Error fetching data.</p>";
+            }
+        }
+    
+        document.addEventListener("DOMContentLoaded", loadData);
+    </script>
+    
+    
+
+</body>
+</html>

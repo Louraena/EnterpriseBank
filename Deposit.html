@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time to Deposit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            font-size: 50px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #0A0A66;
+        }
+        p {
+            font-size: 20px;
+            color: #0A0A66;
+            
+            width: 50%;
+            margin: 0 auto;
+        }
+        h2 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #0A0A66;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            overflow-x: auto; 
+        }
+        table {
+            width: 100%;
+            max-width: 800px; 
+            border-collapse: separate;
+            border-spacing: 5px; 
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+            color: #0A0A66;
+        }
+        th {
+            background-color: #ff8c00;
+        }
+        .blue-bg {
+            background-color: #1e88e5;
+        }
+        .orange-bg {
+            background-color: #ff8c00;
+            font-weight: bold;
+        }
+        .oranges-bg {
+            background-color: #f7d5ad;
+            font-weight: bold;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover{
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+
+        
+        @media (max-width: 768px) { 
+            h1 { font-size: 20px; }
+            h2 { font-size: 18px; }
+            p { font-size: 14px; }
+            th, td { padding: 10px; font-size: 14px; }
+            .btn { width: 100px; font-size: 14px; }
+        }
+
+        @media (max-width: 480px) { 
+            h1 { font-size: 18px; }
+            h2 { font-size: 16px; }
+            p { font-size: 12px; }
+            .container { width: 95%; }
+            table { width: 100%; font-size: 12px; }
+            th, td { padding: 8px; font-size: 12px; }
+            .buttons { flex-direction: column; gap: 10px; }
+            .btn { width: 90%; max-width: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Time to Deposit</h1>
+    <p>Earn higher interest rates and secure your financial future with Enterprise Bank’s Time Deposits. Grow your savings steadily!</p>
+    <h2>Deposit Rates</h2>
+
+    <div class="container">
+        <table>
+            <tr>
+                <th rowspan="2" class="orange-bg">Deposit Range</th>
+                <th>30 Days</th>
+                <th>90 Days</th>
+                <th>180 Days</th>
+                <th>365 Days</th>
+            </tr>
+            <tr class="blue-bg">
+                <td>3.06%</td>
+                <td>3.66%</td>
+                <td>4.06%</td>
+                <td>4.26%</td>
+            </tr>
+            <tr>
+                <td class="oranges-bg">500,000.00</td>
+                <td>1,275.00</td>
+                <td>4,575.00</td>
+                <td>10,150.00</td>
+                <td>21,300.00</td>
+            </tr>
+            <tr>
+                <td class="oranges-bg">1,000,000.00</td>
+                <td>2,550.00</td>
+                <td>9,150.00</td>
+                <td>20,300.00</td>
+                <td>42,600.00</td>
+            </tr>
+            <tr class="blue-bg">
+                <td class="oranges-bg"></td>
+                <td>3.26%</td>
+                <td>3.86%</td>
+                <td>4.26%</td>
+                <td>4.46%</td>
+            </tr>
+            <tr>
+                <td class="oranges-bg">2,000,000.00</td>
+                <td>5,433.00</td>
+                <td>19,300.00</td>
+                <td>42,600.00</td>
+                <td>89,200.00</td>
+            </tr>
+            <tr>
+                <td class="oranges-bg">3,000,000.00</td>
+                <td>8,150.00</td>
+                <td>28,950.00</td>
+                <td>63,900.00</td>
+                <td>133,800.00</td>
+            </tr>
+            <tr>
+                <td class="oranges-bg">5,000,000.00</td>
+                <td>13,583.00</td>
+                <td>48,250.00</td>
+                <td>106,500.00</td>
+                <td>223,000.00</td>
+            </tr>
+            <tr>
+                <td class="oranges-bg">10,000,000.00 & above</td>
+                <td>27,167.00</td>
+                <td>96,500.00</td>
+                <td>213,000.00</td>
+                <td>446,000.00</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="buttons">
+        <a href="home.html"><button class="btn btn-back" >BACK</button></a>
+        <a href="fillup.html"><button class="btn btn-next">NEXT</button></a>
+        
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal & Business Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #0A0A66;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #0A0A66;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+
+        a{
+            text-decoration: none;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover{
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+
+        
+        @media (max-width: 600px) {
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Personal Information</h2>
+        <label>Email:</label>
+        <input type="email" id="email">
+        
+        <label>Name:</label>
+        <input type="text" id="name">
+        
+        <label>Age:</label>
+        <input type="number" id="age">
+        
+        <label>Address:</label>
+        <input type="text" id="address">
+        
+        <label>Sex:</label>
+        <input type="text" id="sex">
+        
+        <label>Birth Date:</label>
+        <input type="date" id="birthdate">
+        
+        <label>Status:</label>
+        <input type="text" id="status">
+        
+        <label>Phone #:</label>
+        <input type="tel" id="phone">
+        
+        <label>Religion:</label>
+        <input type="text" id="religion">
+        
+        <label>Zip Code:</label>
+        <input type="text" id="zipcode">
+        
+        <label>Married:</label>
+        <input type="text" id="married">
+
+        <h2>Business Information</h2>
+        <label>Business Name:</label>
+        <input type="text" id="businessName">
+        
+        <label>Years of Business Operates:</label>
+        <input type="number" id="yearsBusiness">
+        
+        <label>Address of Business:</label>
+        <input type="text" id="businessAddress">
+        
+        <label>Income:</label>
+        <input type="number" id="income">
+        
+        <div class="btn-container">
+            <a href="Deposit.html"><button class="btn btn-back" >BACK</button></a>
+            <a href="doc.html"><button class="btn btn-next">NEXT</button></a>
+        </div>
+    </div>
+        
+
+    <script>
+        // Function to save data to localStorage
+        function saveData() {
+            const formData = {
+                email: document.getElementById("email").value,
+                name: document.getElementById("name").value,
+                age: document.getElementById("age").value,
+                address: document.getElementById("address").value,
+                sex: document.getElementById("sex").value,
+                birthdate: document.getElementById("birthdate").value,
+                status: document.getElementById("status").value,
+                phone: document.getElementById("phone").value,
+                religion: document.getElementById("religion").value,
+                zipcode: document.getElementById("zipcode").value,
+                married: document.getElementById("married").value,
+                businessName: document.getElementById("businessName").value,
+                yearsBusiness: document.getElementById("yearsBusiness").value,
+                businessAddress: document.getElementById("businessAddress").value,
+                income: document.getElementById("income").value
+            };
+    
+            // Store the data in localStorage
+            localStorage.setItem("formData", JSON.stringify(formData));
+            alert("Data saved successfully!");
+        }
+    
+        // Function to handle navigation to the next page
+        function nextPage(event) {
+            saveData(); // Save data before navigating
+        }
+    
+        // Function to load data from localStorage (if any) when the page loads
+        function loadData() {
+            const savedData = localStorage.getItem("formData");
+    
+            if (savedData) {
+                const formData = JSON.parse(savedData);
+    
+                document.getElementById("email").value = formData.email || "";
+                document.getElementById("name").value = formData.name || "";
+                document.getElementById("age").value = formData.age || "";
+                document.getElementById("address").value = formData.address || "";
+                document.getElementById("sex").value = formData.sex || "";
+                document.getElementById("birthdate").value = formData.birthdate || "";
+                document.getElementById("status").value = formData.status || "";
+                document.getElementById("phone").value = formData.phone || "";
+                document.getElementById("religion").value = formData.religion || "";
+                document.getElementById("zipcode").value = formData.zipcode || "";
+                document.getElementById("married").value = formData.married || "";
+                document.getElementById("businessName").value = formData.businessName || "";
+                document.getElementById("yearsBusiness").value = formData.yearsBusiness || "";
+                document.getElementById("businessAddress").value = formData.businessAddress || "";
+                document.getElementById("income").value = formData.income || "";
+            }
+        }
+    
+        // Load data when the page loads
+        document.addEventListener("DOMContentLoaded", loadData);
+    </script>
+    
+    
+</body>
+</html>

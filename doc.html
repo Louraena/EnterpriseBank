@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Documents</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #0A0A66;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #0A0A66;
+        }
+        input[type="file"] {
+            width: 100%;
+            margin-top: 5px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover{
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Upload Required Documents</h2>
+
+        <label>2x2 ID Picture:</label>
+        <input type="file" id="idPictureInput" onchange="saveImage('idPictureInput', 'idPicture')">
+
+        <label>Valid ID 1:</label>
+        <input type="file" id="validID1Input" onchange="saveImage('validID1Input', 'validID1')">
+
+        <label>Valid ID 2:</label>
+        <input type="file" id="validID2Input" onchange="saveImage('validID2Input', 'validID2')">
+
+        <label>Business Permit:</label>
+        <input type="file" id="businessPermitInput" onchange="saveImage('businessPermitInput', 'businessPermit')">
+
+        <label>BTI:</label>
+        <input type="file" id="btiInput" onchange="saveImage('btiInput', 'bti')">
+
+        <div class="buttons">
+            <a href="fillup.html"><button class="btn btn-back" >BACK</button></a>
+            <a href="submit.html"><button class="btn btn-next">NEXT</button></a>
+            
+        </div>
+    </div>
+
+    <script>
+        // Function to save the uploaded file as Base64 in localStorage
+        function saveImage(inputId, storageKey) {
+            let fileInput = document.getElementById(inputId);
+            let file = fileInput.files[0];
+    
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    localStorage.setItem(storageKey, e.target.result);
+                    alert("Image saved successfully!");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+    
+        // Function to load stored images when the page loads
+        function loadImages() {
+            const fields = [
+                { inputId: "idPictureInput", storageKey: "idPicture" },
+                { inputId: "validID1Input", storageKey: "validID1" },
+                { inputId: "validID2Input", storageKey: "validID2" },
+                { inputId: "businessPermitInput", storageKey: "businessPermit" },
+                { inputId: "btiInput", storageKey: "bti" }
+            ];
+    
+            fields.forEach(field => {
+                let storedImage = localStorage.getItem(field.storageKey);
+                if (storedImage) {
+                    let preview = document.createElement("img");
+                    preview.src = storedImage;
+                    preview.style.width = "100px";
+                    preview.style.marginTop = "10px";
+                    document.getElementById(field.inputId).insertAdjacentElement("afterend", preview);
+                }
+            });
+        }
+    
+        // Function to handle navigation to the next page
+        function nextPage(event) {
+            event.preventDefault();
+            window.location.href = "submit.html";
+        }
+    
+        // Load saved images when the page loads
+        document.addEventListener("DOMContentLoaded", loadImages);
+    </script>
+    
+
+</body>
+</html>
