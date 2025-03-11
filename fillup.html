@@ -145,14 +145,15 @@
         
         <div class="btn-container">
             <a href="Deposit.html"><button class="btn btn-back" >BACK</button></a>
-            <a href="doc.html"><button class="btn btn-next" onclick="saveData()">NEXT</button></a>
+            <a href="doc.html"><button class="btn btn-next" onclick="nextPage(event)">NEXT</button></a>
         </div>
     </div>
         
 
+    
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-    loadData(); // Load saved data on page load
+    loadData(); // Load saved data when the page loads
 });
 
 // Function to save data to localStorage
@@ -163,39 +164,34 @@ function saveData() {
         "businessName", "yearsBusiness", "businessAddress", "income"
     ];
 
-    // Get existing data (if any) to prevent overwriting images
-    let existingData = JSON.parse(localStorage.getItem("formData")) || {};
+    let existingData = JSON.parse(localStorage.getItem("formData")) || {}; // Get existing data
 
     fields.forEach(field => {
         let inputElement = document.getElementById(field);
         if (inputElement) {
-            existingData[field] = inputElement.value; // Merge new data
+            existingData[field] = inputElement.value; // Store updated values
         }
     });
 
-    // Save updated data back to localStorage
-    localStorage.setItem("formData", JSON.stringify(existingData));
-    alert("Data saved successfully!");
+    localStorage.setItem("formData", JSON.stringify(existingData)); // Save to localStorage
 }
 
 // Function to load data from localStorage
 function loadData() {
-    const savedData = localStorage.getItem("formData");
-    if (savedData) {
-        const formData = JSON.parse(savedData);
-        
-        Object.keys(formData).forEach(key => {
-            let inputElement = document.getElementById(key);
-            if (inputElement) {
-                inputElement.value = formData[key];
-            }
-        });
-    }
+    const savedData = JSON.parse(localStorage.getItem("formData")) || {}; // Get saved data
+
+    Object.keys(savedData).forEach(key => {
+        let inputElement = document.getElementById(key);
+        if (inputElement) {
+            inputElement.value = savedData[key]; // Populate fields with saved values
+        }
+    });
 }
 
 // Function to handle navigation to the next page
 function nextPage(event) {
-    saveData(); // Save data before navigating
+    event.preventDefault(); // Prevent default navigation
+    saveData(); // Save form data before navigating
     window.location.href = "doc.html"; // Redirect to the next page
 }
 
