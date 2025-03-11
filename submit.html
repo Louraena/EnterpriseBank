@@ -131,90 +131,121 @@
         </div>
     </div>
 
+    <script>
+        // Function to save the uploaded file as Base64 in localStorage
+        function saveImage(inputId, storageKey) {
+           let fileInput = document.getElementById(inputId);
+           let file = fileInput.files[0];
+       
+           if (file) {
+               let reader = new FileReader();
+               reader.onload = function (e) {
+                   localStorage.setItem(storageKey, e.target.result);
+                   alert("Image saved successfully!");
+                   displayImages(); // Call the display function to show the images immediately after saving
+               };
+               reader.readAsDataURL(file);
+           }
+       }
+       
+       // Function to load and display stored images when the page loads
+       function displayImages() {
+           const images = [
+               { storageKey: "idPicture", imgElementId: "idPicture" },
+               { storageKey: "validID1", imgElementId: "validID1" },
+               { storageKey: "validID2", imgElementId: "validID2" },
+               { storageKey: "businessPermit", imgElementId: "businessPermit" },
+               { storageKey: "bti", imgElementId: "bti" }
+           ];
+       
+           images.forEach(image => {
+               let storedImage = localStorage.getItem(image.storageKey);
+               if (storedImage) {
+                   // Set the src of the corresponding img element to the stored image
+                   document.getElementById(image.imgElementId).src = storedImage;
+               }
+           });
+       }
+       
+      
+       
+       // Load and display saved images when the page loads
+       document.addEventListener("DOMContentLoaded", displayImages);
+   
+   </script>
+
     
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-   
-    
-    
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-    loadSavedData(); // Load saved text fields
-    displayImages(); // Load saved images
-    document.getElementById("sendEmailButton").addEventListener("click", sendEmail);
-});
-
-// Function to load saved data from localStorage
-function loadSavedData() {
-    const savedData = localStorage.getItem("formData");
-
-    if (savedData) {
-        const formData = JSON.parse(savedData);
-
-        Object.keys(formData).forEach(key => {
-            let element = document.getElementById(key);
-            if (element) {
-                element.textContent = formData[key] || "N/A"; // Set text content for display
-            }
-        });
-    }
-}
-
-// Function to load and display stored images
-function displayImages() {
-    const images = [
-        { storageKey: "idPicture", imgElementId: "idPicture" },
-        { storageKey: "validID1", imgElementId: "validID1" },
-        { storageKey: "validID2", imgElementId: "validID2" },
-        { storageKey: "businessPermit", imgElementId: "businessPermit" },
-        { storageKey: "bti", imgElementId: "bti" }
-    ];
-
-    images.forEach(image => {
-        let storedImage = localStorage.getItem(image.storageKey);
-        if (storedImage) {
-            document.getElementById(image.imgElementId).src = storedImage;
-        } else {
-            document.getElementById(image.imgElementId).style.display = "none"; // Hide if no image is available
+        function loadSavedData() {
+            const textFields = [
+                "name", "email", "age", "address", "sex", "birthdate",
+                "status", "phone", "religion", "zipcode", "married",
+                "businessName", "yearsBusiness", "businessAddress", "income"
+            ];
+    
+            textFields.forEach(field => {
+                let value = localStorage.getItem(field) || "N/A"; 
+                document.getElementById(field).textContent = value;
+            });
         }
-    });
-}
-
-// Function to send an email using EmailJS
-function sendEmail() {
-    emailjs.init("pAvbhxqt3I4JzjYmi"); // Replace with your actual EmailJS Public Key
-
-    const savedData = localStorage.getItem("formData");
-    if (!savedData) {
-        alert("No data found to send.");
-        return;
-    }
-
-    const formData = JSON.parse(savedData);
-
-    // Format message as plain text
-    const messageContent = Object.entries(formData)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join("\n");
-
-    const emailParams = {
-        from_name: formData.name,
-        email: formData.email,
-        to_email: "your-email@example.com", // Replace with your recipient email
-        message: messageContent
-    };
-
-    emailjs.send("service_ym5r47e", "template_3yxr2f9", emailParams)
-        .then(response => {
-            console.log("Email sent successfully!", response);
-            alert("Your application has been submitted! Our team will review your application and contact you within the day. Thank you.");
-        })
-        .catch(error => {
-            console.error("Error sending email:", error);
-            alert("Error sending email: " + JSON.stringify(error));
+    
+        function sendEmail() {
+            emailjs.init("pAvbhxqt3I4JzjYmi"); // Replace with your actual EmailJS Public Key
+    
+            const formData = {
+                Name: document.getElementById("name").textContent,
+                Email: document.getElementById("email").textContent,
+                Age: document.getElementById("age").textContent,
+                Address: document.getElementById("address").textContent,
+                Sex: document.getElementById("sex").textContent,
+                Birthdate: document.getElementById("birthdate").textContent,
+                Status: document.getElementById("status").textContent,
+                Phone: document.getElementById("phone").textContent,
+                Religion: document.getElementById("religion").textContent,
+                Zipcode: document.getElementById("zipcode").textContent,
+                Married: document.getElementById("married").textContent,
+                "Business Name": document.getElementById("businessName").textContent,
+                "Years in Business": document.getElementById("yearsBusiness").textContent,
+                "Business Address": document.getElementById("businessAddress").textContent,
+                Income: document.getElementById("income").textContent
+            };
+    
+            // Format message as plain text
+            const messageContent = Object.entries(formData)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join("\n");
+    
+            const emailParams = {
+                from_name: formData.Name,
+                email: formData.Email,
+                to_email: "your-email@example.com", // Replace with recipient email
+                message: messageContent
+            };
+    
+            emailjs.send("service_ym5r47e", "template_3yxr2f9", emailParams)
+                .then(response => {
+                    console.log("Your application has been submitted!", response);
+                    alert("Your application has been submitted! Our team will review your application and contact you within the day. Thank you");
+                })
+                .catch(error => {
+                    console.error("Error sending email:", error);
+                    alert("Error sending email: " + JSON.stringify(error));
+                });
+        }
+    
+        document.addEventListener("DOMContentLoaded", function () {
+            loadSavedData();
+            document.getElementById("sendEmailButton").addEventListener("click", sendEmail);
         });
-}
+
+
+   
 
     </script>
+    
+    
+    
         
 
 </body>
