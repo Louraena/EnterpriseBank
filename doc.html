@@ -107,6 +107,24 @@
     <script>
         // Function to save the uploaded file as Base64 in localStorage
         function saveImage(inputId, storageKey) {
+    let fileInput = document.getElementById(inputId);
+    let file = fileInput.files[0];
+
+    if (file) {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            let existingData = JSON.parse(localStorage.getItem("formData")) || {}; 
+
+            // Store image data while keeping text data
+            existingData[storageKey] = e.target.result;
+
+            localStorage.setItem("formData", JSON.stringify(existingData));
+            alert("Image saved successfully!");
+        };
+        reader.readAsDataURL(file);
+    }
+}
+
             let fileInput = document.getElementById(inputId);
             let file = fileInput.files[0];
     
@@ -118,7 +136,7 @@
                 };
                 reader.readAsDataURL(file);
             }
-        }
+        
     
         // Function to load stored images when the page loads
         function loadImages() {
