@@ -151,63 +151,53 @@
         
 
     <script>
-        // Function to save data to localStorage
-        function saveData() {
-            const formData = {
-                email: document.getElementById("email").value,
-                name: document.getElementById("name").value,
-                age: document.getElementById("age").value,
-                address: document.getElementById("address").value,
-                sex: document.getElementById("sex").value,
-                birthdate: document.getElementById("birthdate").value,
-                status: document.getElementById("status").value,
-                phone: document.getElementById("phone").value,
-                religion: document.getElementById("religion").value,
-                zipcode: document.getElementById("zipcode").value,
-                married: document.getElementById("married").value,
-                businessName: document.getElementById("businessName").value,
-                yearsBusiness: document.getElementById("yearsBusiness").value,
-                businessAddress: document.getElementById("businessAddress").value,
-                income: document.getElementById("income").value
-            };
-    
-            // Store the data in localStorage
-            localStorage.setItem("formData", JSON.stringify(formData));
-            alert("Data saved successfully!");
+        document.addEventListener("DOMContentLoaded", function () {
+    loadData(); // Load saved data on page load
+});
+
+// Function to save data to localStorage
+function saveData() {
+    const fields = [
+        "email", "name", "age", "address", "sex", "birthdate",
+        "status", "phone", "religion", "zipcode", "married",
+        "businessName", "yearsBusiness", "businessAddress", "income"
+    ];
+
+    let formData = {};
+
+    fields.forEach(field => {
+        let inputElement = document.getElementById(field);
+        if (inputElement) {
+            formData[field] = inputElement.value;
         }
-    
-        // Function to handle navigation to the next page
-        function nextPage(event) {
-            saveData(); // Save data before navigating
-        }
-    
-        // Function to load data from localStorage (if any) when the page loads
-        function loadData() {
-            const savedData = localStorage.getItem("formData");
-    
-            if (savedData) {
-                const formData = JSON.parse(savedData);
-    
-                document.getElementById("email").value = formData.email || "";
-                document.getElementById("name").value = formData.name || "";
-                document.getElementById("age").value = formData.age || "";
-                document.getElementById("address").value = formData.address || "";
-                document.getElementById("sex").value = formData.sex || "";
-                document.getElementById("birthdate").value = formData.birthdate || "";
-                document.getElementById("status").value = formData.status || "";
-                document.getElementById("phone").value = formData.phone || "";
-                document.getElementById("religion").value = formData.religion || "";
-                document.getElementById("zipcode").value = formData.zipcode || "";
-                document.getElementById("married").value = formData.married || "";
-                document.getElementById("businessName").value = formData.businessName || "";
-                document.getElementById("yearsBusiness").value = formData.yearsBusiness || "";
-                document.getElementById("businessAddress").value = formData.businessAddress || "";
-                document.getElementById("income").value = formData.income || "";
+    });
+
+    // Store the data in localStorage
+    localStorage.setItem("formData", JSON.stringify(formData));
+    alert("Data saved successfully!");
+}
+
+// Function to load data from localStorage
+function loadData() {
+    const savedData = localStorage.getItem("formData");
+    if (savedData) {
+        const formData = JSON.parse(savedData);
+        
+        Object.keys(formData).forEach(key => {
+            let inputElement = document.getElementById(key);
+            if (inputElement) {
+                inputElement.value = formData[key];
             }
-        }
-    
-        // Load data when the page loads
-        document.addEventListener("DOMContentLoaded", loadData);
+        });
+    }
+}
+
+// Function to handle navigation to the next page
+function nextPage(event) {
+    saveData(); // Save data before navigating
+    window.location.href = "doc.html"; // Redirect to the next page
+}
+
     </script>
     
     
