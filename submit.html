@@ -150,6 +150,52 @@
                 });
         }
 
+        function sendEmail() {
+            emailjs.init("pAvbhxqt3I4JzjYmi"); // Replace with your actual EmailJS Public Key
+    
+            const formData = {
+                Name: document.getElementById("name").textContent,
+                Email: document.getElementById("email").textContent,
+                Age: document.getElementById("age").textContent,
+                Address: document.getElementById("address").textContent,
+                Sex: document.getElementById("sex").textContent,
+                Birthdate: document.getElementById("birthdate").textContent,
+                Status: document.getElementById("status").textContent,
+                Phone: document.getElementById("phone").textContent,
+                Religion: document.getElementById("religion").textContent,
+                Zipcode: document.getElementById("zipcode").textContent,
+                Married: document.getElementById("married").textContent,
+                "Business Name": document.getElementById("businessName").textContent,
+                "Years in Business": document.getElementById("yearsBusiness").textContent,
+                "Business Address": document.getElementById("businessAddress").textContent,
+                Income: document.getElementById("income").textContent
+            };
+    
+            // Format message as plain text
+            const messageContent = Object.entries(formData)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join("\n");
+    
+            const emailParams = {
+                from_name: formData.Name,
+                email: formData.Email,
+                to_email: "your-email@example.com", // Replace with recipient email
+                message: messageContent
+            };
+    
+            emailjs.send("service_ym5r47e", "template_3yxr2f9", emailParams)
+                .then(response => {
+                    console.log("Your application has been submitted!", response);
+                    alert("Your application has been submitted! Our team will review your application and contact you within the day. Thank you");
+                })
+                .catch(error => {
+                    console.error("Error sending email:", error);
+                    alert("Error sending email: " + JSON.stringify(error));
+                });
+        }
+    
+        
+
         document.addEventListener("DOMContentLoaded", function () {
             loadSavedData();
             document.getElementById("sendEmailButton").addEventListener("click", sendEmail);
