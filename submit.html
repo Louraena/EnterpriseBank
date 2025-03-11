@@ -173,10 +173,33 @@
        document.addEventListener("DOMContentLoaded", displayImages);
    
    </script>
-
+    
     
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script>
+
+function loadSavedData() {
+    const savedData = JSON.parse(localStorage.getItem("formData"));
+
+    if (savedData) {
+        Object.keys(savedData).forEach(key => {
+            let element = document.getElementById(key);
+            if (element) {
+                if (element.tagName === "IMG") {
+                    // If it's an image, set src
+                    element.src = savedData[key];
+                    element.style.display = "block"; 
+                } else {
+                    // Otherwise, set text fields
+                    element.textContent = savedData[key] || "N/A";
+                }
+            }
+        });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", loadSavedData);
+
         function loadSavedData() {
             const textFields = [
                 "name", "email", "age", "address", "sex", "birthdate",
@@ -240,7 +263,7 @@
         });
 
 
-   
+        
 
     </script>
     
