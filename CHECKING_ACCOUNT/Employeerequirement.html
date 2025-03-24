@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Account Requirements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #0A0A66;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background: #f9f9f9;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: 5px solid #0A0A66;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn.btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn.btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover {
+            background: blue;
+            color: white;
+        }
+        .btn-next:hover {
+            background: orange;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Requirements:</h2>
+        <ul>
+            <li>Latest 2x2 ID picture</li>
+            <li>Valid ID (any primary ID as long as it has signature)</li>
+            <li>Company ID</li>
+        </ul>
+
+        <div class="buttons">
+            <a href="PersonalInfo.html"><button class="btn btn-back">BACK</button></a>
+            <a href="../Submit.html"><button class="btn btn-next">NEXT</button></a>
+        </div>
+    </div>
+</body>
+</html>

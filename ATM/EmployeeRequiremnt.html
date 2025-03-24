@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js" defer></script>
+    <title>Employee Requirements</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #0A0A66;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #0A0A66;
+        }
+        select, input[type="file"] {
+            width: 100%;
+            margin-top: 5px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn.btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn.btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover {
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Upload Required Documents</h2>
+
+        <label for="idType">Select ID Type:</label>
+        <select id="idType">
+            <option value="passport">Passport</option>
+            <option value="drivers_license">Driver’s License</option>
+            <option value="nbi_clearance">NBI Clearance</option>
+            <option value="police_clearance">Police Clearance</option>
+            <option value="voters_id">Voter’s ID</option>
+            <option value="sss_card">SSS Card</option>
+            <option value="gsis_e_card">GSIS e-Card</option>
+        </select>
+
+        <label for="idPictureInput">Upload Selected ID:</label>
+        <input type="file" id="idPictureInput" accept="image/*">
+
+        <label for="picture2x2Input">2x2 Picture:</label>
+        <input type="file" id="picture2x2Input" accept="image/*">
+
+        <label for="sssNumberInput">SSS Number (Document Upload):</label>
+        <input type="file" id="sssNumberInput" accept="image/*">
+
+        <label for="tinNumberInput">TIN Number (Document Upload):</label>
+        <input type="file" id="tinNumberInput" accept="image/*">
+
+        <div class="buttons">
+            <a href="ATM.html"><button class="btn btn-back">BACK</button></a>
+            <button class="btn btn-next" id="nextButton">NEXT</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const idType = document.getElementById("idType");
+    const idPictureInput = document.getElementById("idPictureInput");
+    const picture2x2Input = document.getElementById("picture2x2Input");
+    const sssNumberInput = document.getElementById("sssNumberInput");
+    const tinNumberInput = document.getElementById("tinNumberInput");
+    const nextButton = document.getElementById("nextButton");
+
+    // Load previously stored images (if available)
+    function loadSavedImages() {
+        const inputs = [idPictureInput, picture2x2Input, sssNumberInput, tinNumberInput];
+        const storageKeys = ["idPicture", "picture2x2", "sssNumber", "tinNumber"];
+
+        inputs.forEach((input, index) => {
+            if (localStorage.getItem(storageKeys[index])) {
+                input.dataset.saved = "true";
+            }
+        });
+    }
+    loadSavedImages();
+
+    function saveImage(inputElement, storageKey) {
+        const file = inputElement.files[0];
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = function () {
+                localStorage.setItem(storageKey, reader.result);
+                inputElement.dataset.saved = "true"; // Mark as saved
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    idPictureInput.addEventListener("change", function () {
+        saveImage(this, "idPicture");
+    });
+
+    picture2x2Input.addEventListener("change", function () {
+        saveImage(this, "picture2x2");
+    });
+
+    sssNumberInput.addEventListener("change", function () {
+        saveImage(this, "sssNumber");
+    });
+
+    tinNumberInput.addEventListener("change", function () {
+        saveImage(this, "tinNumber");
+    });
+
+    nextButton.addEventListener("click", function () {
+        if (
+            !idPictureInput.dataset.saved ||
+            !picture2x2Input.dataset.saved ||
+            !sssNumberInput.dataset.saved ||
+            !tinNumberInput.dataset.saved
+        ) {
+            alert("Please upload all required documents before proceeding.");
+        } else {
+            localStorage.setItem("selectedIDType", idType.value); // Store selected ID type
+            window.location.href = "employeereview.html"; // Change to your actual next page
+        }
+    });
+});
+
+    </script>
+</body>
+</html>

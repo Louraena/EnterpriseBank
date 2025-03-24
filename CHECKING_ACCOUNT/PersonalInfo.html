@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <title>Personal Info</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #0A0A66;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            color: #0A0A66;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+        a {
+            text-decoration: none;
+        }
+        .btn:hover {
+            opacity: 0.8;
+        }
+        .btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover {
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+        @media (max-width: 600px) {
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
+        /* Hide additional fields by default */
+        #businessFields, #employeeFields {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Personal Information</h2>
+        <label>Name:</label>
+        <input type="text" id="name">
+
+        <label>Age:</label>
+        <input type="number" id="age">
+
+        <label>Address:</label>
+        <input type="text" id="address">
+
+        <label>Sex:</label>
+        <input type="text" id="sex">
+
+        <label>Marital Status:</label>
+        <input type="text" id="status">
+
+        <label>Email Address:</label>
+        <input type="email" id="email">
+        
+        <label>Source of Income:</label>
+        <select id="businessType">
+            <option value="">Select</option>
+            <option value="business">Business</option>
+            <option value="employee">Employee</option>
+        </select>
+
+        <!-- Business Fields -->
+        <div id="businessFields">
+            <h2>BUSINESS INFORMATION</h2>
+            <label>Business Name:</label>
+            <input type="text" id="businessname">
+        
+            <label>Business Address:</label>
+            <input type="text" id="businessAddress">
+        
+            <div class="btn-container">
+                <a href="choose.html"><button class="btn btn-back">BACK</button></a>
+                <button class="btn btn-next" id="businessNextButton">NEXT</button>
+            </div>
+        </div>
+        
+        <!-- Employee Fields -->
+        <div id="employeeFields">
+            <h2>EMPLOYMENT INFORMATION</h2>
+            <label>Employer Name:</label>
+            <input type="text" id="employerName">
+        
+            <label>Employer Address:</label>
+            <input type="text" id="employerAddress">
+        
+            <div class="btn-container">
+                <a href="choose.html"><button class="btn btn-back">BACK</button></a>
+                <button class="btn btn-next" id="employeeNextButton">NEXT</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('businessType').addEventListener('change', function() {
+            let businessFields = document.getElementById('businessFields');
+            let employeeFields = document.getElementById('employeeFields');
+    
+            if (this.value === "business") {
+                businessFields.style.display = "block";
+                employeeFields.style.display = "none";
+            } else if (this.value === "employee") {
+                employeeFields.style.display = "block";
+                businessFields.style.display = "none";
+            } else {
+                businessFields.style.display = "none";
+                employeeFields.style.display = "none";
+            }
+        });
+
+        function saveCommonData() {
+            localStorage.setItem('name', document.getElementById('name').value);
+            localStorage.setItem('age', document.getElementById('age').value);
+            localStorage.setItem('address', document.getElementById('address').value);
+            localStorage.setItem('sex', document.getElementById('sex').value);
+            localStorage.setItem('status', document.getElementById('status').value);
+            localStorage.setItem('email', document.getElementById('email').value);
+            localStorage.setItem('businessType', document.getElementById('businessType').value);
+        }
+
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const name = document.getElementById('name').value || 'Applicant';
+            const age = document.getElementById('age').value;
+            const address = document.getElementById('address').value;
+            const sex = document.getElementById('sex').value;
+            const status = document.getElementById('status').value;
+            const email = document.getElementById('email').value;
+            const businessType = document.getElementById('businessType').value;
+            let additionalInfo = "";
+
+            if (businessType === "business") {
+                additionalInfo = `Business Name: ${document.getElementById('businessname').value}\nBusiness Address: ${document.getElementById('businessAddress').value}`;
+            } else if (businessType === "employee") {
+                additionalInfo = `Employer Name: ${document.getElementById('employerName').value}\nEmployer Address: ${document.getElementById('employerAddress').value}`;
+            }
+
+            doc.text("Personal Information", 20, 20);
+            doc.text(`Name: ${name}`, 20, 30);
+            doc.text(`Age: ${age}`, 20, 40);
+            doc.text(`Address: ${address}`, 20, 50);
+            doc.text(`Sex: ${sex}`, 20, 60);
+            doc.text(`Status: ${status}`, 20, 70);
+            doc.text(`Email: ${email}`, 20, 80);
+            doc.text(`Source of Income: ${businessType}`, 20, 90);
+            doc.text(additionalInfo, 20, 100);
+            doc.save(`${name}.pdf`);
+        }
+
+        document.getElementById('businessNextButton').addEventListener('click', function() {
+            saveCommonData();
+            generatePDF();
+            setTimeout(() => { window.location.href = "bussinessRequrement.html"; }, 1000);
+        });
+
+        document.getElementById('employeeNextButton').addEventListener('click', function() {
+            saveCommonData();
+            generatePDF();
+            setTimeout(() => { window.location.href = "Employeerequirement.html"; }, 1000);
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #0A0A66;
+        }
+        .info {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .info p {
+            background: #F7941D;
+            padding: 10px;
+            color: #1E40AF;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+        .btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover {
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Employee Information</h2>
+        <div class="info" id="formDataDisplay"></div>
+        <div class="buttons">
+            <button class="btn btn-back" onclick="goBack()">Back</button>
+            <button class="btn btn-next" id="sendEmailButton" onclick="next()">NEXT</button>
+        </div>
+    </div>
+    <script>
+
+        function goBack() {
+            window.location.href = "choose.html";
+        }
+        function next() {
+            window.location.href = "EmployeeRequiremnt.html";
+        }
+        window.onload = function () {
+            const formData = JSON.parse(localStorage.getItem('formData')) || {};
+            let displayData = "";
+            for (const [key, value] of Object.entries(formData)) {
+                displayData += `<p><strong>${key}:</strong> ${value || 'N/A'}</p>`;
+            }
+            document.getElementById('formDataDisplay').innerHTML = displayData;
+        };
+
+        document.getElementById('sendEmailButton').addEventListener('click', function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const formData = JSON.parse(localStorage.getItem('formData')) || {};
+            let yOffset = 10;
+            
+            doc.text(`Employee Information`, 10, yOffset);
+            yOffset += 10;
+            for (const [key, value] of Object.entries(formData)) {
+                doc.text(`${key}: ${value || 'N/A'}`, 10, yOffset);
+                yOffset += 10;
+            }
+            
+            doc.save(`Employee_Information.pdf`);
+            alert('Your PDF has been generated and saved.');
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit & Send PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="script.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #0A0A66;
+        }
+        .info {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .info p {
+            background: #F7941D;
+            padding: 10px;
+            color: #1E40AF;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+        .btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover {
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+        .image-container {
+            margin-top: 20px;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Before Clicking Submit, Verify all information is accurate and complete.</h2>
+
+        <h2>Uploaded Documents</h2>
+        <div class="image-container">
+            <p><strong>2x2 ID Picture:</strong></p>
+            <img id="idPicture" alt="2x2 ID Picture">
+
+            <p><strong>Valid ID 1:</strong></p>
+            <img id="validID1" alt="Valid ID 1">
+
+            <p><strong>Valid ID 2:</strong></p>
+            <img id="validID2" alt="Valid ID 2">
+
+            <p><strong>Business Permit:</strong></p>
+            <img id="businessPermit" alt="Business Permit">
+
+            <p><strong>BTI:</strong></p>
+            <img id="bti" alt="BTI">
+        </div>
+
+        <div class="buttons">
+            <a href="ReviewInfo.html"><button class="btn btn-back">BACK</button></a>
+            <a href="../Submit.html"><button class="btn btn-next" id="sendEmailButton">SUBMIT</button></a>
+        </div>
+    </div>
+
+    <script>
+        // Display images stored in localStorage
+        window.onload = function() {
+            document.getElementById('idPicture').src = localStorage.getItem('idPicture') || '';
+            document.getElementById('validID1').src = localStorage.getItem('validID1') || '';
+            document.getElementById('validID2').src = localStorage.getItem('validID2') || '';
+            document.getElementById('businessPermit').src = localStorage.getItem('businessPermit') || '';
+            document.getElementById('bti').src = localStorage.getItem('bti') || '';
+        }
+    
+        // Generate and download PDF
+        document.getElementById('sendEmailButton').addEventListener('click', function () {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+    
+            // Get applicant's name for filename
+            const applicantName = localStorage.getItem('name') || 'Applicant';
+    
+            // Adding personal info (adjust positions as needed)
+            doc.text(`Personal Information`, 10, 10);
+            doc.text(`Name: ${applicantName}`, 10, 20);
+            doc.text(`Email: ${localStorage.getItem('email') || 'N/A'}`, 10, 30);
+            doc.text(`Age: ${localStorage.getItem('age') || 'N/A'}`, 10, 40);
+    
+            // Adding images if available
+            function addImageToPDF(imgData, x, y, width, height) {
+                if (imgData) {
+                    doc.addImage(imgData, 'JPEG', x, y, width, height);
+                }
+            }
+    
+            addImageToPDF(localStorage.getItem('idPicture'), 10, 50, 50, 50);
+            addImageToPDF(localStorage.getItem('validID1'), 70, 50, 50, 50);
+            addImageToPDF(localStorage.getItem('validID2'), 130, 50, 50, 50);
+            
+            doc.addPage();
+            addImageToPDF(localStorage.getItem('businessPermit'), 10, 20, 50, 50);
+            addImageToPDF(localStorage.getItem('bti'), 70, 20, 50, 50);
+    
+            // Automatically download the PDF with the applicant's name
+            doc.save(`${applicantName}_images.pdf`);
+            alert('Your PDF has been generated and stored. You can now access it on another page.');
+        });
+    </script>
+    
+    
+
+    
+
+</body>
+</html>

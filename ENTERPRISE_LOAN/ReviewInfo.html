@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit & Send PDF</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        h2 {
+            color: #0A0A66;
+        }
+        .info {
+            text-align: left;
+            margin-top: 10px;
+        }
+        .info p {
+            background: #F7941D;
+            padding: 10px;
+            color: #1E40AF;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: 2px solid;
+            cursor: pointer;
+            border-radius: 20px;
+            width: 120px;
+            transition: all 0.3s ease;
+        }
+        .btn-back {
+            border-color: blue;
+            color: blue;
+            background: white;
+        }
+        .btn-next {
+            border-color: orange;
+            color: orange;
+            background: white;
+        }
+        .btn-back:hover {
+            border-color: blue;
+            color: white;
+            background: blue;
+        }
+        .btn-next:hover {
+            border-color: orange;
+            color: white;
+            background: orange;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Before Clicking Submit, Verify all information is accurate and complete.</h2>
+
+        <h2>Personal Information</h2>
+        <div class="info">
+            <p><strong>Name:</strong> <span id="name"></span></p>
+            <p><strong>Email:</strong> <span id="email"></span></p>
+            <p><strong>Birth Date:</strong> <span id="birthdate"></span></p>
+            <p><strong>Age:</strong> <span id="age"></span></p>
+            <p><strong>Address:</strong> <span id="address"></span></p>
+            <p><strong>Sex:</strong> <span id="sex"></span></p>
+            <p><strong>Status:</strong> <span id="status"></span></p>
+            <p><strong>Phone #:</strong> <span id="phone"></span></p>
+            <p><strong>Religion:</strong> <span id="religion"></span></p>
+            <p><strong>Zip Code:</strong> <span id="zipcode"></span></p>
+            <p><strong>Nationality:</strong> <span id="nationality"></span></p>
+        </div>
+
+        <h2>Guardian Information</h2>
+        <div class="info">
+            <p><strong>Mother's Name:</strong> <span id="mama"></span></p>
+            <p><strong>Mother's Occupation:</strong> <span id="Occupation"></span></p>
+            <p><strong>Father's Name:</strong> <span id="papa"></span></p>
+            <p><strong>Father's Occupation:</strong> <span id="occupation"></span></p>
+        </div>
+
+        <div class="buttons">
+            <a href="RequirementForm.html"><button class="btn btn-back">BACK</button></a>
+            <a href="../Submit.html"><button class="btn btn-next" id="sendEmailButton" onclick="next()">NEXT</button></a>
+        </div>
+    </div>
+
+    <script>
+        function next() {
+            window.location.href = "../Submit.html";
+        }
+        window.onload = function () {
+    // Retrieve and parse the stored form data
+    const formData = JSON.parse(localStorage.getItem('formData')) || {};
+
+    // Map form fields to display elements
+    const fields = {
+        name: "name",
+        email: "email",
+        birthdate: "birthdate",
+        age: "age",
+        address: "address",
+        sex: "sex",
+        status: "status",
+        phone: "phone",
+        religion: "religion",
+        businessName: "businessName",
+        businessLocation: "businessLocation",
+        yearsBusiness: "yearsBusiness",
+        income: "income",
+        businessContact: "businessContact"
+    };
+
+    // Populate the fields with stored values
+    Object.keys(fields).forEach(key => {
+        const element = document.getElementById(fields[key]);
+        if (element) {
+            element.textContent = formData[key] || 'N/A';
+        }
+    });
+};
+
+// Generate and download PDF
+document.getElementById('sendEmailButton').addEventListener('click', function () {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Retrieve and parse form data from localStorage
+    const formData = JSON.parse(localStorage.getItem('formData')) || {};
+
+    doc.text("Personal Information", 10, 10);
+    doc.text(`Name: ${formData.name || 'N/A'}`, 10, 20);
+    doc.text(`Email: ${formData.email || 'N/A'}`, 10, 30);
+    doc.text(`Birth Date: ${formData.birthdate || 'N/A'}`, 10, 40);
+    doc.text(`Age: ${formData.age || 'N/A'}`, 10, 50);
+    doc.text(`Address: ${formData.address || 'N/A'}`, 10, 60);
+    doc.text(`Sex: ${formData.sex || 'N/A'}`, 10, 70);
+    doc.text(`Status: ${formData.status || 'N/A'}`, 10, 80);
+    doc.text(`Phone #: ${formData.phone || 'N/A'}`, 10, 90);
+    doc.text(`Religion: ${formData.religion || 'N/A'}`, 10, 100);
+    
+    doc.addPage();
+    doc.text("Business Information", 10, 10);
+    doc.text(`Business Name: ${formData.businessName || 'N/A'}`, 10, 20);
+    doc.text(`Business Location: ${formData.businessLocation || 'N/A'}`, 10, 30);
+    doc.text(`Years in Business: ${formData.yearsBusiness || 'N/A'}`, 10, 40);
+    doc.text(`Income: ${formData.income || 'N/A'}`, 10, 50);
+    doc.text(`Business Contact: ${formData.businessContact || 'N/A'}`, 10, 60);
+
+    doc.save(`${formData.name || 'Applicant'}_file.pdf`);
+    alert('Your PDF has been generated and saved.');
+});
+
+    </script>
+</body>
+</html>
